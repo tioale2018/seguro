@@ -1,6 +1,24 @@
 <IfModule mod_headers.c>
+  # Força HTTPS
   Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+  # Impede que o conteúdo seja embutido em outros sites (protetor contra clickjacking)
+  Header set X-Frame-Options "SAMEORIGIN"
+
+  # Impede sniffing de tipos MIME
+  Header set X-Content-Type-Options "nosniff"
+
+  # Restringe o tipo de conteúdo que o navegador pode carregar, evitando XSS e ataques de injeção
+  Header set Content-Security-Policy "default-src 'self'; script-src 'self'; object-src 'none'; base-uri 'self';"
+
+  # Define a política de referência (quanto de informações o navegador compartilha ao navegar)
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+
+  # Controla quais APIs e recursos podem ser utilizados (ajuda a prevenir abuso de permissões)
+  Header set Permissions-Policy "geolocation=(self), microphone=(), camera=()"
 </IfModule>
+
+
 
 # Força redirecionamento de HTTP para HTTPS
 RewriteEngine On
