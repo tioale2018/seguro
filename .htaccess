@@ -10,6 +10,8 @@
 
   # Restringe o tipo de conteúdo que o navegador pode carregar, evitando XSS e ataques de injeção
   # Header set Content-Security-Policy "default-src 'self'; script-src 'self'; object-src 'none'; base-uri 'self';"
+  Header set Content-Security-Policy "default-src 'self'; script-src 'self' https://w3brand.com.br; object-src 'none'; base-uri 'self';"
+
 
   # Define a política de referência (quanto de informações o navegador compartilha ao navegar)
   Header set Referrer-Policy "strict-origin-when-cross-origin"
