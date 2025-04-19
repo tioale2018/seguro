@@ -14,11 +14,16 @@ $nonce = bin2hex(random_bytes(16)); // Gera um nonce aleatório
   <title>Login Seguro</title>
 </head>
 <body>
-<form action="processa.php" method="POST">
-  <input type="text" name="usuario" placeholder="Usuário" required>
-  <input type="password" name="senha" placeholder="Senha" required>
-  <button type="submit">Entrar</button>
-</form>
+  <form action="processa.php" method="POST" onsubmit="return encryptFormData(event)">
+    <input type="text" name="usuario_visivel" id="usuario" placeholder="Usuário" required>
+    <input type="password" name="senha_visivel" id="senha" placeholder="Senha" required>
+
+    <!-- Campos ocultos para dados criptografados -->
+    <input type="hidden" name="usuario_seguro" id="usuario_seguro">
+    <input type="hidden" name="senha_segura" id="senha_segura">
+
+    <button type="submit">Entrar</button>
+  </form>
 
   <script nonce="<?= $nonce; ?>" src="./js/seguranca.js" defer></script>
 </body>
