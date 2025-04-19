@@ -11,8 +11,10 @@
     // Verifica se o formulário foi enviado
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Captura os dados do formulário
-        $nome = htmlspecialchars($_POST['nome']);
-        $email = htmlspecialchars($_POST['email']);
+        // $nome = htmlspecialchars($_POST['nome']);
+        // $email = htmlspecialchars($_POST['email']);
+        $nome = $_POST['nome'];
+        $email = $_POST['email'];
 
         // Exibe os dados capturados
         echo "<p>Nome: $nome</p>";
@@ -26,8 +28,13 @@
         exit();
     }
 
-
     ?>
+
+    <form action="atualiza.php" method="post">
+        <input type="hidden" name="nome" value="<?= $nome; ?>">
+        <input type="hidden" name="email" value="<?= $email; ?>">
+        <input type="submit" value="Atualizar">
+    </form>
     
 </body>
 </html>
