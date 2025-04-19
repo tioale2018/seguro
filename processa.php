@@ -11,4 +11,10 @@ if (openssl_private_decrypt($senha_criptografada, $senha, $chave_privada, OPENSS
 } else {
     echo "<h2>Erro ao descriptografar a senha!</h2>";
 }
+
+echo "<hr>";
+echo "<h2>Dados recebidos:</h2>";
+echo "<pre>";
+print_r($_POST);
+echo "</pre>";
 ?>
