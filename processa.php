@@ -1,15 +1,23 @@
 <?php
-// Caminho seguro da chave privada (fora do public_html, se possível)
-$chave_privada = file_get_contents(__DIR__ . "/chave_privada.pem");
+require_once 'phpseclib/autoload.php';
 
-$senha_criptografada = base64_decode($_POST['senha_segura']);
-$senha = null;
+use phpseclib3\Crypt\RSA;
+use phpseclib3\Crypt\PublicKeyLoader;
 
-if (openssl_private_decrypt($senha_criptografada, $senha, $chave_privada, OPENSSL_PKCS1_OAEP_PADDING)) {
+// Carrega a chave privada do arquivo
+$privateKey = PublicKeyLoader::loadPrivateKey(file_get_contents(__DIR__ . '/chave_privada.pem'))
+    ->withPadding(RSA::ENCRYPTION_OAEP)
+    ->withHash('sha256');
+
+// Decodifica a senha criptografada
+$encrypted = base64_decode($_POST['senha_segura'] ?? '');
+
+try {
+    $decrypted = $privateKey->decrypt($encrypted);
     echo "<h2>Usuário: " . htmlspecialchars($_POST['usuario']) . "</h2>";
-    echo "<h2>Senha descriptografada: " . htmlspecialchars($senha) . "</h2>";
-} else {
-    echo "<h2>Erro ao descriptografar a senha!</h2>";
+    echo "<h2>Senha descriptografada: " . htmlspecialchars($decrypted) . "</h2>";
+} catch (Exception $e) {
+    echo "Erro ao descriptografar: " . $e->getMessage();
 }
 
 echo "<hr>";
@@ -26,3 +34,6 @@ if (!openssl_private_decrypt($senha_criptografada, $senha, $chave_privada, OPENS
 }
 
 ?>
+
+
+
