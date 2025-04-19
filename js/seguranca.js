@@ -1,3 +1,5 @@
+alert9('ok');
+
 async function encryptFormData(event) {
     event.preventDefault();
 
