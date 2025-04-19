@@ -18,4 +18,11 @@ echo $_POST['usuario'] . "<br>";
 echo $_POST['senha_segura'] . "<br>";
 echo $_POST['senha'] . "<br>";
 echo "<hr>";
+
+if (!openssl_private_decrypt($senha_criptografada, $senha, $chave_privada, OPENSSL_PKCS1_OAEP_PADDING)) {
+    echo "Erro ao descriptografar a senha!<br>";
+    echo "<pre>" . openssl_error_string() . "</pre>";
+    exit;
+}
+
 ?>
