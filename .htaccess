@@ -10,7 +10,7 @@
 
   # Restringe o tipo de conteúdo que o navegador pode carregar, evitando XSS e ataques de injeção
   # Header set Content-Security-Policy "default-src 'self'; script-src 'self'; object-src 'none'; base-uri 'self';"
-  # Header set Content-Security-Policy "default-src 'self'; script-src 'self' https://w3brand.com.br/js/; object-src 'none'; base-uri 'self';"
+  Header set Content-Security-Policy "default-src 'self'; script-src 'self' https://w3brand.com.br/js/; object-src 'none'; base-uri 'self';"
 
 
 
