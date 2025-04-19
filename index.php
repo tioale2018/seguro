@@ -3,7 +3,7 @@ date_default_timezone_set('America/Sao_Paulo');
 $nonce = bin2hex(random_bytes(16)); // Gera um nonce aleatório
 
 // header("Content-Security-Policy: default-src 'self'; script-src 'self' 'nonce-$nonce'; object-src 'none'; base-uri 'self'");
-header("Content-Security-Policy: default-src 'self'; script-src 'self' 'nonce-$nonce'; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'");
+// header("Content-Security-Policy: default-src 'self'; script-src 'self' 'nonce-$nonce'; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'");
 
 
 ?>
