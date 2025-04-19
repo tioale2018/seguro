@@ -31,8 +31,8 @@
     ?>
 
     <form action="atualiza.php" method="post">
-        <input type="hidden" name="nome" value="<?= $nome; ?>">
-        <input type="hidden" name="email" value="<?= $email; ?>">
+        <input type="text" name="nome" value="<?= $nome; ?>">
+        <input type="text" name="email" value="<?= $email; ?>">
         <input type="submit" value="Atualizar">
     </form>
     
