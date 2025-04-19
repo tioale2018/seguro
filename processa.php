@@ -10,7 +10,7 @@ $privateKey = PublicKeyLoader::loadPrivateKey(file_get_contents(__DIR__ . '/chav
     ->withHash('sha256');
 
 // Decodifica a senha criptografada
-$encrypted     = base64_decode($_POST['senha_segura'] ?? '');
+$encrypted     = base64_decode($_POST['senha_seguro'] ?? '');
 $userencrypted = base64_decode($_POST['usuario_seguro'] ?? '');
 
 try {
@@ -26,8 +26,8 @@ try {
 
 echo "<hr>";
 echo "<h2>Dados recebidos:</h2>";
-echo $_POST['usuario'] . "<br>";
-echo $_POST['senha_segura'] . "<br>";
+echo $_POST['usuario_seguro'] . "<br>";
+echo $_POST['senha_seguro'] . "<br>";
 // echo $_POST['senha'] . "<br>";
 echo "<hr>";
 
