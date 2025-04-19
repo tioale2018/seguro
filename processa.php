@@ -10,11 +10,14 @@ $privateKey = PublicKeyLoader::loadPrivateKey(file_get_contents(__DIR__ . '/chav
     ->withHash('sha256');
 
 // Decodifica a senha criptografada
-$encrypted = base64_decode($_POST['senha_segura'] ?? '');
+$encrypted     = base64_decode($_POST['senha_segura'] ?? '');
+$userencrypted = base64_decode($_POST['usuario_seguro'] ?? '');
 
 try {
     $decrypted = $privateKey->decrypt($encrypted);
-    echo "<h2>Usuário: " . htmlspecialchars($_POST['usuario']) . "</h2>";
+    $userdecrypted = $privateKey->decrypt($userencrypted);
+    // echo "<h2>Usuário: " . htmlspecialchars($_POST['usuario']) . "</h2>";
+    echo "<h2>Usuário descriptografado: " . htmlspecialchars($userdecrypted) . "</h2>";
     echo "<h2>Senha descriptografada: " . htmlspecialchars($decrypted) . "</h2>";
 } catch (Exception $e) {
     echo "Erro ao descriptografar: " . $e->getMessage();

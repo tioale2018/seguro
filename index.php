@@ -6,9 +6,13 @@
 </head>
 <body>
   <form action="processa.php" method="POST" onsubmit="return encryptFormData(event)">
-    <input type="text" name="usuario" placeholder="Usuário" required>
-    <input type="password" name="senha" id="senha" placeholder="Senha" required>
+    <input type="text" name="usuario_visivel" id="usuario" placeholder="Usuário" required>
+    <input type="password" name="senha_visivel" id="senha" placeholder="Senha" required>
+
+    <!-- Campos ocultos para dados criptografados -->
+    <input type="hidden" name="usuario_seguro" id="usuario_seguro">
     <input type="hidden" name="senha_segura" id="senha_segura">
+
     <button type="submit">Entrar</button>
   </form>
 
@@ -17,14 +21,11 @@
       event.preventDefault();
 
       if (!window.crypto || !window.crypto.subtle) {
-        alert("Este navegador não suporta criptografia com Web Crypto API.");
+        alert("Este navegador não suporta criptografia segura.");
         return false;
       }
 
-      const senha = document.getElementById('senha').value;
-      const encoder = new TextEncoder();
-      const data = encoder.encode(senha);
-
+      // Chave pública (não precisa mudar isso)
       const pem = `-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnaBvmUcUSg+hkQoxfRRJ
 QPL6NWh+CxxOSLvE6kw04AnD+LcxkfW5gBeE1jzSSE1vRHydEbI+sf62oxiPZDKO
@@ -35,9 +36,11 @@ YSC2Bw7swmiQTqBj1HgAFewN1TV3PyoynZCE24RUu0P+aNU8oZb7KnyyaiqEK9dn
 EQIDAQAB
 -----END PUBLIC KEY-----`;
 
-      const pemHeader = "-----BEGIN PUBLIC KEY-----";
-      const pemFooter = "-----END PUBLIC KEY-----";
-      const pemContents = pem.replace(pemHeader, "").replace(pemFooter, "").replace(/\s/g, "");
+      const pemContents = pem
+        .replace(/-----BEGIN PUBLIC KEY-----/, "")
+        .replace(/-----END PUBLIC KEY-----/, "")
+        .replace(/\s/g, "");
+
       const binaryDer = Uint8Array.from(atob(pemContents), c => c.charCodeAt(0));
 
       const key = await crypto.subtle.importKey(
@@ -48,15 +51,18 @@ EQIDAQAB
         ["encrypt"]
       );
 
-      const encrypted = await crypto.subtle.encrypt(
-        { name: "RSA-OAEP" },
-        key,
-        data
-      );
+      const encoder = new TextEncoder();
+      const usuario = document.getElementById("usuario").value;
+      const senha = document.getElementById("senha").value;
 
-      const encryptedBase64 = btoa(String.fromCharCode(...new Uint8Array(encrypted)));
+      const usuarioEncrypted = await crypto.subtle.encrypt({ name: "RSA-OAEP" }, key, encoder.encode(usuario));
+      const senhaEncrypted = await crypto.subtle.encrypt({ name: "RSA-OAEP" }, key, encoder.encode(senha));
 
-      document.getElementById("senha_segura").value = encryptedBase64;
+      document.getElementById("usuario_seguro").value = btoa(String.fromCharCode(...new Uint8Array(usuarioEncrypted)));
+      document.getElementById("senha_segura").value = btoa(String.fromCharCode(...new Uint8Array(senhaEncrypted)));
+
+      // Evita envio dos dados visíveis
+      document.getElementById("usuario").disabled = true;
       document.getElementById("senha").disabled = true;
 
       event.target.submit();
