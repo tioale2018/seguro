@@ -1,5 +1,8 @@
 <?php
 date_default_timezone_set('America/Sao_Paulo');
+$nonce = bin2hex(random_bytes(16)); // Gera um nonce aleatório
+header("Content-Security-Policy: default-src 'self'; script-src 'self' 'nonce-$nonce'; object-src 'none'; base-uri 'self'");
+
 
 ?>
 <!DOCTYPE html>
@@ -20,6 +23,6 @@ date_default_timezone_set('America/Sao_Paulo');
     <button type="submit">Entrar</button>
   </form>
 
-  <script src="./js/seguranca.js" defer></script>
+  <script nonce="<?= $nonce; ?>" src="./js/seguranca.js" defer></script>
 </body>
 </html>
