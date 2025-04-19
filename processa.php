@@ -1,10 +1,10 @@
 <?php
-require_once 'phpseclib/autoload.php';
+require 'vendor/autoload.php';
 
 use phpseclib3\Crypt\RSA;
 use phpseclib3\Crypt\PublicKeyLoader;
 
-// Carrega a chave privada do arquivo
+// Lê a chave privada
 $privateKey = PublicKeyLoader::loadPrivateKey(file_get_contents(__DIR__ . '/chave_privada.pem'))
     ->withPadding(RSA::ENCRYPTION_OAEP)
     ->withHash('sha256');
@@ -19,6 +19,7 @@ try {
 } catch (Exception $e) {
     echo "Erro ao descriptografar: " . $e->getMessage();
 }
+
 
 echo "<hr>";
 echo "<h2>Dados recebidos:</h2>";
