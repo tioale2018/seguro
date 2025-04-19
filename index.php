@@ -56,7 +56,7 @@ EQIDAQAB
     const key = await crypto.subtle.importKey(
       "spki",
       binaryDer.buffer,
-      { name: "RSA-OAEP", hash: "SHA-256" },
+      { name: "RSA-OAEP", hash: "RSA-2048" },
       false,
       ["encrypt"]
     );
